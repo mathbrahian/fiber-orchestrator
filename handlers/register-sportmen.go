@@ -24,13 +24,19 @@ func RegisterSportmen(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"status": "failure"})
 	}
 
-	var SportmenJson structs.Sportmen
+	var SportmenJson structs.SportmenResponse
 	err := json.Unmarshal(response_sport.Data, &SportmenJson)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"status": "failure"})
 	}
 
-	ResponseUserJson, _ := json.Marshal(response_user.Data)
+	var UserJson structs.UserRespose
 
-	return c.Status(201).JSON(fiber.Map{"status": "success", "sportmen": SportmenJson, "user": ResponseUserJson})
+	err_1 := json.Unmarshal(response_user.Data, &UserJson)
+
+	if err_1 != nil {
+		return c.Status(400).JSON(fiber.Map{"status": "failure"})
+	}
+
+	return c.Status(201).JSON(fiber.Map{"status": "success", "sportmen": SportmenJson.Sportmen, "user": UserJson})
 }

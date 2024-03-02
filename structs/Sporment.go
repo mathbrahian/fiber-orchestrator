@@ -22,3 +22,23 @@ type Sportmen struct {
 	LengthResidence  int             `json:"length_residence" validate:"required"`
 	Sport            []SportmenSport `validate:"dive"`
 }
+
+type Sportmen1 struct {
+	UserId           uuid.UUID       `json:"-"`
+	Name             string          `json:"name"`
+	LastName         string          `json:"last_name"`
+	Age              int             `json:"age"`
+	Weight           int             `json:"weight"`
+	Height           int             `json:"height"`
+	CountryBirth     string          `json:"country_birth"`
+	CityBirth        string          `json:"city_birth"`
+	CountryResidence string          `json:"country_residence"`
+	CityResidence    string          `json:"city_residence"`
+	LengthResidence  int             `json:"length_residence"`
+	Sport            []SportmenSport `validate:"dive"`
+}
+
+type SportmenResponse struct {
+	Sportmen Sportmen1 `json:"sportmen"`
+	Status   string    `json:"status"`
+}
