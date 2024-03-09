@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -11,6 +12,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/viper"
 
 	uuid "github.com/google/uuid"
 )
@@ -37,7 +39,17 @@ func CreateUser(c *fiber.Ctx, userUuid uuid.UUID) ([]byte, int, error) {
 
 	JsonUser, _ := json.Marshal(NewUser)
 
-	req_user, err := http.NewRequest(http.MethodPost, "http://host.docker.internal:6050/user/api/register", bytes.NewBuffer(JsonUser))
+	viper.SetConfigFile(".env")
+
+	viper.ReadInConfig()
+
+	viper.AutomaticEnv()
+
+	host_auth, _ := viper.Get("HOST_AUTH").(string)
+
+	auth_url := fmt.Sprintf("%s/auth/api/register", host_auth)
+
+	req_user, err := http.NewRequest(http.MethodPost, auth_url, bytes.NewBuffer(JsonUser))
 
 	if err != nil {
 		return nil, http.StatusInternalServerError, errors.New("could not create request")

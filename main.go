@@ -9,7 +9,11 @@ import (
 func main() {
 	app := fiber.New()
 
-	app.Post("/", handlers.RegisterSportmen)
+	app.Get("/orchestrator/ping", func(c *fiber.Ctx) error {
+		return c.Status(200).SendString("ping")
+	})
+
+	app.Post("/orchestrator", handlers.RegisterSportmen)
 
 	app.Listen(":80")
 }

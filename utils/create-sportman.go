@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -11,6 +12,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/viper"
 
 	uuid "github.com/google/uuid"
 )
@@ -39,7 +41,17 @@ func CreateSportmen(c *fiber.Ctx, userUuid uuid.UUID) ([]byte, int, error) {
 
 	JsonSportmen, _ := json.Marshal(NewSportmen)
 
-	req_sport, err := http.NewRequest(http.MethodPost, "http://host.docker.internal:6250/", bytes.NewBuffer(JsonSportmen))
+	viper.SetConfigFile(".env")
+
+	viper.ReadInConfig()
+
+	viper.AutomaticEnv()
+
+	host_sport, _ := viper.Get("HOST_SPORT").(string)
+
+	sport_url := fmt.Sprintf("%s/sport", host_sport)
+
+	req_sport, err := http.NewRequest(http.MethodPost, sport_url, bytes.NewBuffer(JsonSportmen))
 
 	if err != nil {
 		return nil, http.StatusInternalServerError, errors.New("could not create request")

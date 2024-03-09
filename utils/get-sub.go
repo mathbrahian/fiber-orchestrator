@@ -2,13 +2,26 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/spf13/viper"
 )
 
 func GetSub() ([]byte, int, error) {
 
-	req_sub, err := http.NewRequest(http.MethodGet, "http://host.docker.internal:6450/", nil)
+	viper.SetConfigFile(".env")
+
+	viper.ReadInConfig()
+
+	viper.AutomaticEnv()
+
+	host_sub, _ := viper.Get("HOST_SUB").(string)
+
+	sub_url := fmt.Sprintf("%s/sub", host_sub)
+
+	req_sub, err := http.NewRequest(http.MethodGet, sub_url, nil)
 
 	if err != nil {
 		return nil, http.StatusInternalServerError, errors.New("could not create request")
