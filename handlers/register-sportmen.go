@@ -17,10 +17,12 @@ func RegisterSportmen(c *fiber.Ctx) error {
 	response_sport, response_user, response_sub := utils.GoRequests(c, UserUuid)
 
 	if response_sport.Err != nil || response_user.Err != nil || response_sub.Err != nil {
+		utils.DeleteRequests(c, UserUuid)
 		return c.Status(400).JSON(fiber.Map{"status": "failure"})
 	}
 
 	if response_sport.StatusCode != 201 || response_user.StatusCode != 201 || response_sub.StatusCode != 200 {
+		utils.DeleteRequests(c, UserUuid)
 		return c.Status(400).JSON(fiber.Map{"status": "failure"})
 	}
 

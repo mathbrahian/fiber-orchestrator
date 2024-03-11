@@ -25,3 +25,8 @@ func GoRequests(c *fiber.Ctx, UserUuid uuid.UUID) (structs.Response, structs.Res
 	}()
 	return <-response_sport, <-response_user, <-response_sub
 }
+
+func DeleteRequests(c *fiber.Ctx, UserUuid uuid.UUID) {
+	CreateSportmen(c, UserUuid)
+	CreateUser(c, UserUuid)
+}

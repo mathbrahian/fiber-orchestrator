@@ -10,6 +10,10 @@ type User struct {
 	Password string    `json:"password" validate:"required"`
 }
 
+type UserDelete struct {
+	ID uuid.UUID `json:"id"`
+}
+
 type UserRespose struct {
 	Email string `json:"email"`
 	Token string `json:"token"`

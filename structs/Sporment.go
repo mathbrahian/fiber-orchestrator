@@ -23,6 +23,10 @@ type Sportmen struct {
 	Sport            []SportmenSport `validate:"dive"`
 }
 
+type SportmenDelete struct {
+	UserId uuid.UUID `json:"user"`
+}
+
 type Sportmen1 struct {
 	UserId           uuid.UUID       `json:"-"`
 	Name             string          `json:"name"`
